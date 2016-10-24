@@ -12,9 +12,9 @@ public class ReverseInteger {
     public int reverse(int x) {
         String s = String.valueOf(x);
         boolean isNegative = false;
-        if(s.startsWith("-")) {
+        if(s.startsWith("-") || s.startsWith("+")) {
             s = s.substring(1);
-            isNegative = true;
+            isNegative = (s.charAt(0) == '-');
         }
         if(s.length() > 1) {
             char[] c = s.toCharArray();
@@ -39,6 +39,6 @@ public class ReverseInteger {
     }
 
     public static void main(String[] args) {
-        System.out.println(new ReverseInteger().reverse(Integer.MIN_VALUE));
+        System.out.println(new ReverseInteger().reverse(+102));
     }
 }
