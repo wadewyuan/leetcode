@@ -10,6 +10,35 @@ package com.leetcode.easy;
  */
 public class ReverseInteger {
     public int reverse(int x) {
-        return x;
+        String s = String.valueOf(x);
+        boolean isNegative = false;
+        if(s.startsWith("-")) {
+            s = s.substring(1);
+            isNegative = true;
+        }
+        if(s.length() > 1) {
+            char[] c = s.toCharArray();
+            char[] c1 = new char[c.length];
+            for(int i = c.length - 1; i >= 0; i--) {
+                c1[c1.length - 1 - i] = c[i];
+            }
+            s = String.copyValueOf(c1);
+            if(isNegative) {
+                s = "-" + s;
+            }
+            int result = 0;
+            try {
+                result = Integer.parseInt(s);
+            } catch (NumberFormatException e) {
+                System.out.println("Integer overflows");
+            }
+            return result;
+        } else {
+            return x;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new ReverseInteger().reverse(Integer.MIN_VALUE));
     }
 }
