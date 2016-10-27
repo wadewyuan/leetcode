@@ -56,7 +56,7 @@ public class StringToInteger {
     }
 
     public static void main(String[] args) {
-        String input = "    10522545459"; // failed with current solution
+        String input = "    10522545459"; // fixed
         System.out.println(new StringToInteger().myAtoi(input));
         System.out.println(Integer.parseInt(input));
     }
