@@ -23,32 +23,31 @@ public class StringToInteger {
             return 0; // first character is invalid
         }
         int result = 0;
-        int p = 1; // power of 10
+        long p = 1; // power of 10, define as long to avoid integer overflow
         for(int i = d.length() - 1; i >= 0; i--) {
             char c = d.charAt(i);
             if(c >= '0' && c <= '9') {
-                if(Integer.MAX_VALUE / p >= c-48) {
-                    int num = (c - 48) * p;
-                    if(p <= Integer.MAX_VALUE / 10) {
-                        p *= 10;
-                        if(!isNegative) {
-                            if((Integer.MAX_VALUE - result >= num)) {
-                                result += num;
-                            } else {
-                                result = Integer.MAX_VALUE;
-                            }
-                        } else {
-                            if(result == 0 || result - Integer.MIN_VALUE >= num) {
-                                result -= num;
-                            } else {
-                                result = Integer.MIN_VALUE;
-                            }
-                        }
+                long num = (c - 48) * p;
+                if(num > Integer.MAX_VALUE) {
+                    num = Integer.MAX_VALUE;
+                } else {
+                    p *= 10;
+                }
+                if(!isNegative) {
+                    if((Integer.MAX_VALUE - result >= num)) {
+                        result += num;
                     } else {
-                        continue;
+                        result = Integer.MAX_VALUE;
+                    }
+                } else {
+                    if(result == 0 || result - Integer.MIN_VALUE >= num) {
+                        result -= num;
+                    } else {
+                        result = Integer.MIN_VALUE;
                     }
                 }
             } else {
+                // one invalid character detected, reset the result and continue loop
                 result = 0;
                 p = 1;
             }

@@ -16,6 +16,6 @@ package com.leetcode.easy;
  */
 public class PalindromeInteger {
     public boolean isPalindrome(int x) {
-
+        return false;
     }
 }
