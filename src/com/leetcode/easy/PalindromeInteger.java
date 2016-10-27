@@ -16,6 +16,34 @@ package com.leetcode.easy;
  */
 public class PalindromeInteger {
     public boolean isPalindrome(int x) {
-        return false;
+        // To optimize, running slow
+        if(x < 0) {
+            return false;
+        }
+        if(x < 10) {
+            return true;
+        }
+
+        long n = 10;
+        int c = 1;
+        while (x / n > 0) {
+            c++;
+            n *= 10;
+        }
+        System.out.println(c);
+        for(int i = 1; i <= c; i++, --c) {
+            int a = x % 10;
+            int b = (int) (x / Math.pow(10, c - i));
+            if(a != b) {
+                return false;
+            }
+            x -= b * Math.pow(10, c - i);
+            x = x / 10;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new PalindromeInteger().isPalindrome(-2147447412));
     }
 }
