@@ -23,48 +23,64 @@ package com.leetcode.hard;
  *
  */
 public class RegularExpressionMatching {
+    /**
+     * 1, If p.charAt(j) == s.charAt(i) :  dp[i][j] = dp[i-1][j-1];
+     * 2, If p.charAt(j) == '.' : dp[i][j] = dp[i-1][j-1];
+     * 3, If p.charAt(j) == '*':
+     *      here are two sub conditions:
+     *      1   if p.charAt(j-1) != s.charAt(i) : dp[i][j] = dp[i][j-2]  //in this case, a* only counts as empty
+     *      2   if p.charAt(j-1) == s.charAt(i) or p.charAt(j-1) == '.':
+     *          dp[i][j] = dp[i-1][j]    //in this case, a* counts as multiple a
+     *          or dp[i][j] = dp[i][j-1]   // in this case, a* counts as single a
+     *          or dp[i][j] = dp[i][j-2]   // in this case, a* counts as empty
+     * @param s
+     * @param p
+     * @return
+     */
     public boolean isMatch(String s, String p) {
-        int j = 0;
-        boolean asteriskMatch = false;
-        for(int i = 0; i < p.length(); i++) {
-            if(i >= p.length() - 1 && j < s.length() - 1) {
-                return false; // pattern is complete, but string still remains
+        if (s == null || p == null) {
+            return false;
+        }
+        boolean[][] dp = new boolean[s.length()+1][p.length()+1];
+        dp[0][0] = true;
+        for (int i = 0; i < p.length(); i++) {
+            if (p.charAt(i) == '*' && dp[0][i-1]) {
+                dp[0][i+1] = true;
             }
-            if(p.charAt(i) != '*') {
-                if((i + 1 < p.length()) && p.charAt(i + 1) == '*') {
-                    asteriskMatch = true;
-                    for(; j < s.length(); ) {
-                        if(!isCharMatch(s.charAt(j), p.charAt(i))) {
-                            asteriskMatch = false;
-                            break;
-                        } else {
-                            j++;
-                        }
-                    }
-                } else {
-                    if(j >= s.length() - 1 && i <= p.length() - 1) {
-                        return false;
-                    }
-                    if(!isCharMatch(s.charAt(j++), p.charAt(i)) && !asteriskMatch) {
-                        return false;
+        }
+        for (int i = 0 ; i < s.length(); i++) {
+            for (int j = 0; j < p.length(); j++) {
+                if (p.charAt(j) == '.') {
+                    dp[i+1][j+1] = dp[i][j];
+                }
+                if (p.charAt(j) == s.charAt(i)) {
+                    dp[i+1][j+1] = dp[i][j];
+                }
+                if (p.charAt(j) == '*') {
+                    if (p.charAt(j-1) != s.charAt(i) && p.charAt(j-1) != '.') {
+                        dp[i+1][j+1] = dp[i+1][j-1];
+                    } else {
+                        dp[i+1][j+1] = (dp[i+1][j] || dp[i][j+1] || dp[i+1][j-1]);
                     }
                 }
             }
         }
-        return true;
+        return dp[s.length()][p.length()];
     }
 
-    /**
-     *
-     * @param c1 input character
-     * @param c2 character to match
-     * @return true if c1 equals to c2 or c2 is '.'
-     */
-    private boolean isCharMatch(char c1, char c2) {
-        return c1 == c2 || c2 == '.';
+    private String printTwoDimensionArray(boolean[][] dp) {
+        String s = "";
+        for (int i = 0; i < dp.length; i++) {
+            for(int j = 0; j < dp[i].length; j++) {
+                s += dp[i][j] + ",\t";
+            }
+            s += "\n";
+        }
+        return s;
     }
 
     public static void main(String[] args) {
-        System.out.println(new RegularExpressionMatching().isMatch("aaabcc", ".*c")); // failed with current code
+        System.out.println(new RegularExpressionMatching().isMatch("aaabcc", ".*b.*"));
+//        System.out.println(new RegularExpressionMatching().isMatch("aab", "c*a*b*"));
     }
 }
