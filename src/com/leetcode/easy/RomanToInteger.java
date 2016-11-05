@@ -21,6 +21,11 @@ public class RomanToInteger {
         map.put('M', 1000);
         int result = 0;
         for(int i = 0; i < s.length(); i++) {
+            if(map.get(s.charAt(i)) == null) {
+                result = 0;
+                System.out.println(String.format("Invalid input: %s", s));
+                break;
+            }
             if(i < s.length() - 1 && map.get(s.charAt(i)) < map.get(s.charAt(i+1))) {
                 int l = map.get(s.charAt(i)), r = map.get(s.charAt(i+1));
                 if(r / l == 10 || r / l == 5) {
@@ -40,6 +45,6 @@ public class RomanToInteger {
     }
 
     public static void main(String[] args) {
-        System.out.println(new RomanToInteger().romanToInt("IIII"));
+        System.out.println(new RomanToInteger().romanToInt("ABC"));
     }
 }
