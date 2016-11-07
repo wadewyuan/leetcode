@@ -20,7 +20,7 @@ package com.leetcode.hard;
  */
 public class MedianSortedArrays {
 
-    public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int[] merged = new int[]{};
         if(nums1.length > 0 && nums2.length > 0) {
             merged = new int[nums1.length + nums2.length];
@@ -40,7 +40,7 @@ public class MedianSortedArrays {
         return getArrayMedian(merged);
     }
 
-    static int getNthElem(int[] arr, int n) {
+    int getNthElem(int[] arr, int n) {
         if(n >= arr.length) {
             return arr[arr.length - 1];
         } else {
@@ -48,10 +48,10 @@ public class MedianSortedArrays {
         }
     }
 
-    static double getArrayMedian(int[] arr) {
+    double getArrayMedian(int[] arr) {
         double median = 0;
-        if(arr.length > 0) {
-            int l = arr.length;
+        int l = arr.length;
+        if(l > 0) {
             median = l % 2 == 0 ? (double)(arr[l/2] + arr[l/2 -1])/2 : arr[(l - 1) / 2];
         }
         return median;
@@ -60,7 +60,7 @@ public class MedianSortedArrays {
     public static void main(String[] args) {
         int[] n1 = new int[]{1,2};
         int[] n2 = new int[]{3,4};
-        System.out.println(findMedianSortedArrays(n1, n2));
+        System.out.println(new MedianSortedArrays().findMedianSortedArrays(n1, n2));
     }
 
 }
