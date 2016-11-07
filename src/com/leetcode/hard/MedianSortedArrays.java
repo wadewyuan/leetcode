@@ -21,6 +21,7 @@ package com.leetcode.hard;
 public class MedianSortedArrays {
 
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        // Merging the arrays is O(m+n), doesn't meet the requirement
         int[] merged = new int[]{};
         if(nums1.length > 0 && nums2.length > 0) {
             merged = new int[nums1.length + nums2.length];
